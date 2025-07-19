@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Insurance Orders
+  description: |-
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080/api/v1
+tags:
+  - name: Orders
+    description: Insurance orders
+paths:
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: Creates a new insurance order
+      operationId: createInsuranceOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreate'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        '500':
+          description: Application general error
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: Returns an order by its id
+      operationId: getOrder
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Not Found
+        '500':
+          description: Application general error
+
+components:
+  schemas:
+    Coverage:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Roubo'
+        amount:
+          type: number
+          format: double
+          example: 20000.99
+    StatusHistoryItem:
+      type: object
+      properties:
+        status:
+          type: string
+          example: 'RECEIVED'
+        timestamp:
+          type: string
+          format: date-time
+    OrderBase:
+      type: object
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        productId:
+          type: integer
+          example: 986554
+        category:
+          type: string
+          example: 'AUTO'
+        totalMonthlyPremiumAmount:
+          type: number
+          format: double
+          example: 2587.95
+        insuredAmount:
+          type: number
+          format: double
+          example: 250000.52
+        paymentMethod:
+          type: string
+          example: 'CREDIT_CARD'
+        salesChannel:
+          type: string
+          example: 'MOBILE'
+        coverages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Coverage"
+        assistances:
+          type: array
+          items:
+            type: string
+          example: ['Guincho até 250km', 'Troca de Óleo', 'Chaveiro 24h']
+    OrderCreate:
+      allOf:
+        - $ref: "#/components/schemas/OrderBase"
+    Order:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              type: string
+              example: 'APPROVED'
+            createdAt:
+              type: string
+              format: date-time
+            finishedAt:
+              type: string
+              format: date-time
+            history:
+              type: array
+              items:
+                $ref: "#/components/schemas/StatusHistoryItem"
+        - $ref: "#/components/schemas/OrderBase"
