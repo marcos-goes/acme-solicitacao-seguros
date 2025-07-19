@@ -1,0 +1,13 @@
+services:
+  db:
+    container_name: insurance-order-db
+    image: postgres:16.3
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/volumes/insurance-order-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'usrOwner'
+      POSTGRES_PASSWORD: 'abc@123'
+      POSTGRES_DB: insurance-order
+      PGDATA: /var/lib/postgresql/data/pgdata

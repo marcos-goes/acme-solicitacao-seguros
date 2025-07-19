@@ -1,5 +1,18 @@
 
-https://www.baeldung.com/java-openapi-generator-server
+
+
+``` bash
+docker compose up -d
+```
+
+``` bash
+docker compose down
+```
+
+``` bash
+sudo rm -Rf ~/volumes/insurance-order-volume
+```
+
 
 ``` bash
 docker run -d \

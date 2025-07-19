@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="003.01" author="Marcos Goes">
+
+        <createTable tableName="tb_coverage">
+
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_coverage" nullable="false" />
+            </column>
+
+            <column name="id_order" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ds_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vl_amount" type="DECIMAL(9,2)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_coverage_order"
+                baseTableName="tb_coverage"
+                baseColumnNames="id_order"
+                referencedTableName="tb_order"
+                referencedColumnNames="id" />
+    </changeSet>
+
+</databaseChangeLog>

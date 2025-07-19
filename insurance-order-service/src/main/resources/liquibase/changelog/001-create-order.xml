@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="001.01" author="Marcos Goes">
+
+        <createTable tableName="tb_order">
+
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_order" nullable="false" />
+            </column>
+
+            <column name="cd_status" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ts_created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ts_finished" type="TIMESTAMP" />
+
+            <column name="id_customer" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="id_product" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="cd_category" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vl_total_monthly_premium" type="DECIMAL(9,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vl_insured" type="DECIMAL(9,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="cd_payment_method" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="cd_sales_channel" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
