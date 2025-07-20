@@ -16,6 +16,7 @@ import org.mgoes.acme.orders.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,5 +54,9 @@ public class OrderService {
 
     public Optional<Order> getOrderById(UUID id) {
         return orderRepository.findById(id);
+    }
+
+    public List<Order> findOrderByCustomerId(UUID customerId) {
+        return orderRepository.findByCustomerId(customerId);
     }
 }

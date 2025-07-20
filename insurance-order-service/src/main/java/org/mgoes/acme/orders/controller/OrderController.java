@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -39,5 +40,18 @@ public class OrderController implements OrdersApiDelegate {
 
         return ResponseEntity
                 .ok(OrderMapper.INSTANCE.toApiOrder(optOrder.get()));
+    }
+
+    @Override
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(UUID customerId) {
+        var orderList = orderService.findOrderByCustomerId(customerId);
+
+        if(orderList.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity
+                .ok(orderList
+                        .stream()
+                        .map(OrderMapper.INSTANCE::toApiOrder).toList());
     }
 }
