@@ -2,9 +2,11 @@ package org.mgoes.acme.orders.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -21,7 +23,8 @@ public class Coverage {
     @Column (name = "vl_amount", precision = 9, scale = 2)
     private BigDecimal amount;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "id_order", referencedColumnName = "id")
+    @JoinColumn(name = "id_order")
     private Order order;
 }

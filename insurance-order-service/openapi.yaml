@@ -27,12 +27,40 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreateResponse'
         '400':
           description: Invalid input
         '422':
           description: Validation exception
         '500':
           description: Application general error
+    get:
+      tags:
+        - Orders
+      summary: Finds orders by customer id
+      operationId: getOrdersByCustomerId
+      parameters:
+        - in: query
+          name: customerId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+        '404':
+          description: Not Found
+        '500':
+          description: Application general error
+
   /orders/{id}:
     get:
       tags:
@@ -57,7 +85,6 @@ paths:
           description: Not Found
         '500':
           description: Application general error
-
 components:
   schemas:
     Coverage:
@@ -117,6 +144,15 @@ components:
     OrderCreate:
       allOf:
         - $ref: "#/components/schemas/OrderBase"
+    OrderCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
     Order:
       allOf:
         - type: object
@@ -138,3 +174,7 @@ components:
               items:
                 $ref: "#/components/schemas/StatusHistoryItem"
         - $ref: "#/components/schemas/OrderBase"
+    OrderList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Order"

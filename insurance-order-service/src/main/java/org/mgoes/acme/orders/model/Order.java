@@ -2,9 +2,11 @@ package org.mgoes.acme.orders.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,10 +22,10 @@ public class Order {
     private String status;
 
     @Column (name = "ts_created")
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     @Column (name = "ts_finished")
-    private LocalDateTime finished;
+    private LocalDateTime finishedAt;
 
     @Column (name = "id_customer")
     private UUID customerId;
@@ -46,12 +48,15 @@ public class Order {
     @Column (name = "vl_insured", precision = 9, scale = 2)
     private BigDecimal insuredAmount;
 
-    @OneToMany(mappedBy = "order")
-    private List<Coverage> coverages;
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "order")//,cascade = CascadeType.PERSIST) //
+    private List<Coverage> coverages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order")
-    private List<Assistance> assistances;
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "order")//,cascade = CascadeType.PERSIST)
+    private List<Assistance> assistances = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order")
-    private List<HistoryItem> history;
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST)
+    private List<HistoryItem> history = new ArrayList<>();
 }

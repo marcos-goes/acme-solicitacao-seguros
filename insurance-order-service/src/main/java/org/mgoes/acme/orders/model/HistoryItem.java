@@ -2,6 +2,7 @@ package org.mgoes.acme.orders.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -18,9 +19,10 @@ public class HistoryItem {
     private String status;
 
     @Column (name = "ts_registered")
-    private LocalDateTime registered;
+    private LocalDateTime timestamp;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "id_order", referencedColumnName = "id")
+    @JoinColumn(name = "id_order")
     private Order order;
 }

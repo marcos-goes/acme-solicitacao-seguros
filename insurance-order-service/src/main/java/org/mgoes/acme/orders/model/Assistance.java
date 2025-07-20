@@ -3,9 +3,11 @@ package org.mgoes.acme.orders.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +23,8 @@ public class Assistance {
     @Column(name = "ds_name")
     private String name;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "id_order", referencedColumnName = "id")
+    @JoinColumn(name = "id_order")
     private Order order;
 }
