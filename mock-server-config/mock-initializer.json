@@ -1,0 +1,86 @@
+[
+  {
+    "httpRequest": {
+      "path": "/v1/analysis",
+      "method": "POST",
+      "body" : {
+        "type": "JSON_PATH",
+        "jsonPath": "$.[?(@.customerId =~ /(.){35}[a-f]/i)]"
+      }
+    },
+    "httpResponse": {
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "statusCode": 200,
+      "body": "{\"orderId\": \"454b7869-4d04-4dec-bf73-7e635bf4bb21\",\"customerId\": \"d91d586a-8240-4cdc-a821-17475340c70d\",\"analyzedAt\": \"2025-07-20T17:40:51.058862\",\"classification\": \"REGULAR\",\"occurrences\": [{\"id\": \"e053467f-bd48-4fd2-9481-75bd4e88ee40\",\"productId\": 78900069,\"type\": \"FRAUD\",\"description\": \"Attempted Fraudulent transaction\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"},{\"id\": \"f053467f-bd48-4fd2-9481-75bd4e88ee41\",\"productId\": 104445569,\"type\": \"SUSPICION\",\"description\": \"Unusual activity flagged for review\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"}]}",
+      "delay": {
+        "timeUnit": "MILLISECONDS",
+        "value": 50
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "path": "/v1/analysis",
+      "method": "POST",
+      "body" : {
+        "type": "JSON_PATH",
+        "jsonPath": "$.[?(@.customerId =~ /(.){35}[0-3]/i)]"
+      }
+    },
+    "httpResponse": {
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "statusCode": 200,
+      "body": "{\"orderId\": \"71a58700-5fe6-4567-abcc-fc5513cb8e5f\",\"customerId\": \"b8304e05-0178-4e41-81e2-403df10f9263\",\"analyzedAt\": \"2025-07-20T17:40:51.058862\",\"classification\": \"HIGH_RISK\",\"occurrences\": [{\"id\": \"e053467f-bd48-4fd2-9481-75bd4e88ee40\",\"productId\": 78900069,\"type\": \"FRAUD\",\"description\": \"Attempted Fraudulent transaction\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"},{\"id\": \"f053467f-bd48-4fd2-9481-75bd4e88ee41\",\"productId\": 104445569,\"type\": \"SUSPICION\",\"description\": \"Unusual activity flagged for review\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"}]}",
+      "delay": {
+        "timeUnit": "MILLISECONDS",
+        "value": 50
+      }
+    }
+  },
+    {
+    "httpRequest": {
+      "path": "/v1/analysis",
+      "method": "POST",
+      "body" : {
+        "type": "JSON_PATH",
+        "jsonPath": "$.[?(@.customerId =~ /(.){35}[4-6]/i)]"
+      }
+    },
+    "httpResponse": {
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "statusCode": 200,
+      "body": "{\"orderId\": \"af99d27b-0092-448a-9097-5f20d6c2c74e\",\"customerId\": \"2d3e90fc-5672-4fe9-9d68-c292e5249815\",\"analyzedAt\": \"2025-07-20T17:40:51.058862\",\"classification\": \"PREFERRED\",\"occurrences\": [{\"id\": \"e053467f-bd48-4fd2-9481-75bd4e88ee40\",\"productId\": 78900069,\"type\": \"FRAUD\",\"description\": \"Attempted Fraudulent transaction\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"},{\"id\": \"f053467f-bd48-4fd2-9481-75bd4e88ee41\",\"productId\": 104445569,\"type\": \"SUSPICION\",\"description\": \"Unusual activity flagged for review\",\"createdAt\": \"2025-07-20T17:40:51.058862\",\"updatedAt\": \"2025-07-20T17:40:51.058862\"}]}",
+      "delay": {
+        "timeUnit": "MILLISECONDS",
+        "value": 50
+      }
+    }
+  },
+    {
+    "httpRequest": {
+      "path": "/v1/analysis",
+      "method": "POST",
+      "body" : {
+        "type": "JSON_PATH",
+        "jsonPath": "$.[?(@.customerId =~ /(.){35}[7-9]/i)]"
+      }
+    },
+    "httpResponse": {
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "statusCode": 200,
+      "body": "{\"orderId\": \"15fff4f0-fb30-4759-8457-7f6b377ec18e\",\"customerId\": \"2e8de788-af74-4d67-a8b9-25d7efa9ff09\",\"analyzedAt\": \"2025-07-20T17:40:51.058862\",\"classification\": \"NO_INFORMATION\",\"occurrences\": []}",
+      "delay": {
+        "timeUnit": "MILLISECONDS",
+        "value": 50
+      }
+    }
+  }
+]

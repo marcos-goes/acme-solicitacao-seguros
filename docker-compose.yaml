@@ -11,3 +11,13 @@ services:
       POSTGRES_PASSWORD: 'abc@123'
       POSTGRES_DB: insurance-order
       PGDATA: /var/lib/postgresql/data/pgdata
+  fraud_service_mock:
+    container_name: fraud-service
+    image: mockserver/mockserver:5.15.0
+    ports:
+      - 1080:1080
+    volumes:
+      - ./mock-server-config:/config
+    environment:
+      MOCKSERVER_LOG_LEVEL: TRACE
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mock-initializer.json
