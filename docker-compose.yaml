@@ -29,7 +29,10 @@ services:
       - 15672:15672
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     environment:
+    
+
       RABBITMQ_DEFINITIONS_FILE: /etc/rabbitmq/definitions.json
 
 
