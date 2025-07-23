@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -43,8 +44,12 @@ public class OrderController implements OrdersApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(UUID customerId) {
-        var orderList = orderService.findOrderByCustomerId(customerId);
+    public ResponseEntity<List<Order>> getOrders(UUID customerId) {
+
+        var orderList =
+                Objects.isNull(customerId) ?
+                        orderService.findOrders() :
+                        orderService.findOrdersByCustomerId(customerId);
 
         if(orderList.isEmpty())
             return ResponseEntity.notFound().build();

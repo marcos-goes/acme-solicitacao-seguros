@@ -2,6 +2,8 @@ package org.mgoes.acme.orders.business;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mgoes.acme.orders.business.fraud.FraudServiceClient;
 import org.mgoes.acme.orders.mapper.OrderMapper;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderService {
@@ -28,6 +31,8 @@ public class OrderService {
     private final HistoryItemRepository historyItemRepository;
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
+
+    private final FraudServiceClient fraudClient;
 
     @Transactional
     public Order createOrder(Order order){
@@ -49,6 +54,11 @@ public class OrderService {
         order.getAssistances().forEach(assistanceRepository::save);
         order.getCoverages().forEach(coverageRepository::save);
 
+        log.info("Order crated: {}", order.getId());
+
+        var analysis = fraudClient.getAnalysis(order.getId(), order.getCustomerId());
+        log.info("Fraud analysis: {}", analysis);
+
         return order;
     }
 
@@ -56,7 +66,11 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public List<Order> findOrderByCustomerId(UUID customerId) {
-        return orderRepository.findByCustomerId(customerId);
+    public List<Order> findOrdersByCustomerId(UUID customerId) {
+        return orderRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
+    }
+
+    public List<Order> findOrders() {
+        return orderRepository.findByOrderByCreatedAtDesc();
     }
 }

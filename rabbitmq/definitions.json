@@ -1,0 +1,110 @@
+{
+    "permissions": [
+        {
+            "configure": ".*",
+            "read": ".*",
+            "user": "guest",
+            "vhost": "/",
+            "write": ".*"
+        }
+    ],
+    "bindings": [
+        {
+            "arguments": {},
+            "destination": "insurance_subscription",
+            "destination_type": "queue",
+            "routing_key": "",
+            "source": "insurance_topic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {},
+            "destination": "payments_subscription",
+            "destination_type": "queue",
+            "routing_key": "",
+            "source": "payments_topic",
+            "vhost": "/"
+        }
+    ],
+    "queues": [
+        {
+            "arguments": {
+                "x-queue-type": "classic"
+            },
+            "auto_delete": false,
+            "durable": true,
+            "name": "insurance_subscription",
+            "type": "classic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {
+                "x-queue-type": "classic"
+            },
+            "auto_delete": false,
+            "durable": true,
+            "name": "payments_subscription",
+            "type": "classic",
+            "vhost": "/"
+        }
+    ],
+    "policies": [],
+    "parameters": [],
+    "rabbitmq_version": "4.1.2",
+    "rabbit_version": "4.1.2",
+    "exchanges": [
+        {
+            "arguments": {},
+            "auto_delete": false,
+            "durable": true,
+            "name": "insurance_topic",
+            "type": "topic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {},
+            "auto_delete": false,
+            "durable": true,
+            "name": "orders_topic",
+            "type": "topic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {},
+            "auto_delete": false,
+            "durable": true,
+            "name": "payments_topic",
+            "type": "topic",
+            "vhost": "/"
+        }
+    ],
+    "vhosts": [
+        {
+            "limits": [],
+            "metadata": {
+                "description": "Default virtual host",
+                "tags": [],
+                "default_queue_type": "classic"
+            },
+            "name": "/"
+        }
+    ],
+    "users": [
+        {
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "limits": {},
+            "name": "guest",
+            "password_hash": "ZcFQuhIR1MXnQTodfCTC2GAcJWyIIsB54Nb+X74qLmNkQPBi",
+            "tags": [
+                "administrator"
+            ]
+        }
+    ],
+    "global_parameters": [
+        {
+            "name": "cluster_tags",
+            "value": []
+        }
+    ],
+    "topic_permissions": []
+}

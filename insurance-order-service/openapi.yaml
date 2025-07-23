@@ -40,15 +40,15 @@ paths:
     get:
       tags:
         - Orders
-      summary: Finds orders by customer id
-      operationId: getOrdersByCustomerId
+      summary: Finds orders (optionally by customer id)
+      operationId: getOrders
       parameters:
         - in: query
           name: customerId
           schema:
             type: string
             format: uuid
-          required: true
+          required: false
       responses:
         '200':
           description: Ok
