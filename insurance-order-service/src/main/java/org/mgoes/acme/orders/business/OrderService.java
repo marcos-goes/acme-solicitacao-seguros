@@ -1,26 +1,28 @@
 package org.mgoes.acme.orders.business;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mgoes.acme.orders.business.fraud.FraudServiceClient;
-import org.mgoes.acme.orders.mapper.OrderMapper;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
-import org.mgoes.acme.orders.openapi.api.OrdersApiDelegate;
-
-import org.mgoes.acme.orders.openapi.model.OrderCreate;
-import org.mgoes.acme.orders.openapi.model.OrderCreateResponse;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
 import org.mgoes.acme.orders.repository.CoverageRepository;
 import org.mgoes.acme.orders.repository.HistoryItemRepository;
 import org.mgoes.acme.orders.repository.OrderRepository;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +35,8 @@ public class OrderService {
     private final CoverageRepository coverageRepository;
 
     private final FraudServiceClient fraudClient;
+    private final RabbitTemplate rabbitTemplate;
+//    private final TopicExchange orderExchange;
 
     @Transactional
     public Order createOrder(Order order){
@@ -53,12 +57,15 @@ public class OrderService {
         order.getHistory().forEach(historyItemRepository::save);
         order.getAssistances().forEach(assistanceRepository::save);
         order.getCoverages().forEach(coverageRepository::save);
-
         log.info("Order crated: {}", order.getId());
 
         var analysis = fraudClient.getAnalysis(order.getId(), order.getCustomerId());
         log.info("Fraud analysis: {}", analysis);
 
+
+        sendToTopic(order);
+
+        log.info("Sent to topic");
         return order;
     }
 
@@ -73,4 +80,22 @@ public class OrderService {
     public List<Order> findOrders() {
         return orderRepository.findByOrderByCreatedAtDesc();
     }
+
+
+    public void sendToTopic(Order order){
+        rabbitTemplate.convertAndSend("orders_topic", "", order.getId().toString().getBytes());
+    }
+
+//    public void sendToTopic(Order order){
+//        ConnectionFactory factory = new ConnectionFactory();
+//        factory.setHost("localhost");
+//        try (Connection connection = factory.newConnection();
+//             Channel channel = connection.createChannel()) {
+//            channel.basicPublish("orders_topic", "", null, order.getId().toString().getBytes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (TimeoutException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

@@ -19,6 +19,14 @@
         },
         {
             "arguments": {},
+            "destination": "orders_subscription",
+            "destination_type": "queue",
+            "routing_key": "",
+            "source": "orders_topic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {},
             "destination": "payments_subscription",
             "destination_type": "queue",
             "routing_key": "",
@@ -34,6 +42,16 @@
             "auto_delete": false,
             "durable": true,
             "name": "insurance_subscription",
+            "type": "classic",
+            "vhost": "/"
+        },
+        {
+            "arguments": {
+                "x-queue-type": "classic"
+            },
+            "auto_delete": false,
+            "durable": true,
+            "name": "orders_subscription",
             "type": "classic",
             "vhost": "/"
         },
