@@ -28,3 +28,7 @@ docker run -d \
 -p 5432:5432 \
 postgres:16.3
 ```
+
+
+
+docker exec -it rabbitmq sh -c "rabbitmqctl"

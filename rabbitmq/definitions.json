@@ -11,7 +11,7 @@
     "bindings": [
         {
             "arguments": {},
-            "destination": "insurance_subscription",
+            "destination": "insurance_queue",
             "destination_type": "queue",
             "routing_key": "",
             "source": "insurance_topic",
@@ -19,7 +19,7 @@
         },
         {
             "arguments": {},
-            "destination": "orders_subscription",
+            "destination": "orders_queue",
             "destination_type": "queue",
             "routing_key": "",
             "source": "orders_topic",
@@ -27,7 +27,7 @@
         },
         {
             "arguments": {},
-            "destination": "payments_subscription",
+            "destination": "payments_queue",
             "destination_type": "queue",
             "routing_key": "",
             "source": "payments_topic",
@@ -41,7 +41,7 @@
             },
             "auto_delete": false,
             "durable": true,
-            "name": "insurance_subscription",
+            "name": "insurance_queue",
             "type": "classic",
             "vhost": "/"
         },
@@ -51,7 +51,7 @@
             },
             "auto_delete": false,
             "durable": true,
-            "name": "orders_subscription",
+            "name": "orders_queue",
             "type": "classic",
             "vhost": "/"
         },
@@ -61,7 +61,7 @@
             },
             "auto_delete": false,
             "durable": true,
-            "name": "payments_subscription",
+            "name": "payments_queue",
             "type": "classic",
             "vhost": "/"
         }

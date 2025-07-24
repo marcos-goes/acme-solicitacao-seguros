@@ -6,19 +6,19 @@ import org.mgoes.acme.orders.business.fraud.model.FraudRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.UUID;
 
 @Slf4j
-@Service
-public class FraudService {
+@Component
+public class FraudClient {
 
     private final RestClient restClient = RestClient.create();
     private final String fraudServiceBaseUri;
 
-    public FraudService(@Value("${fraud.url}") String fraudServiceBaseUri){
+    public FraudClient(@Value("${fraud.url}") String fraudServiceBaseUri){
         this.fraudServiceBaseUri = fraudServiceBaseUri;
     }
 

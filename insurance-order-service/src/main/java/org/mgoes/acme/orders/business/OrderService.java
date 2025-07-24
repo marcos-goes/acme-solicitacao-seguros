@@ -3,7 +3,7 @@ package org.mgoes.acme.orders.business;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.business.fraud.FraudService;
+import org.mgoes.acme.orders.business.fraud.FraudClient;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
@@ -28,9 +28,8 @@ public class OrderService {
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
 
-    private final FraudService fraudService;
+    private final FraudClient fraudClient;
     private final RabbitTemplate rabbitTemplate;
-//    private final TopicExchange orderExchange;
 
     @Transactional
     public Order createOrder(Order order){
@@ -53,7 +52,7 @@ public class OrderService {
         order.getCoverages().forEach(coverageRepository::save);
         log.info("Order crated: {}", order.getId());
 
-        fraudService.executeAnalysis(order.getId(), order.getCustomerId());
+        fraudClient.executeAnalysis(order.getId(), order.getCustomerId());
 
 
         sendToTopic(order);
