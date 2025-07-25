@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mgoes.acme.orders.business.fraud.FraudClient;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
+import org.mgoes.acme.orders.model.OrderStatus;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
 import org.mgoes.acme.orders.repository.CoverageRepository;
 import org.mgoes.acme.orders.repository.HistoryItemRepository;
@@ -33,15 +34,16 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(Order order){
-        var initialStatus = "RECEIVED";
+//        var initialStatus = OrderState.RECEIVED;
         var now = LocalDateTime.now();
 
         order.setId(UUID.randomUUID());
-        order.setStatus(initialStatus);
+        order.setState(OrderStatus.RECEIVED);
+//        order.setStatus(initialStatus);
         order.setCreatedAt(now);
 
         var historyItem = new HistoryItem();
-        historyItem.setStatus(initialStatus);
+        historyItem.setStatus(order.getStatus());
         historyItem.setTimestamp(now);
         historyItem.setOrder(order);
         order.getHistory().add(historyItem);

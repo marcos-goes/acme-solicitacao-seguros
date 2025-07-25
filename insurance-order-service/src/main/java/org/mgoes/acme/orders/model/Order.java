@@ -49,14 +49,22 @@ public class Order {
     private BigDecimal insuredAmount;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order")//,cascade = CascadeType.PERSIST) //
+    @OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST) //
     private List<Coverage> coverages = new ArrayList<>();
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order")//,cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST)
     private List<Assistance> assistances = new ArrayList<>();
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST)
     private List<HistoryItem> history = new ArrayList<>();
+
+    @Transient
+    private OrderStatus state;
+
+    public void setState(OrderStatus newState){
+        this.state = newState;
+        this.status = newState.name();
+    }
 }
