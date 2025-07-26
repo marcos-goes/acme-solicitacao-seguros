@@ -3,6 +3,7 @@ package org.mgoes.acme.orders.business;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mgoes.acme.orders.model.IllegalOrderStateTransitionException;
 import org.mgoes.acme.orders.model.Order;
 import org.mgoes.acme.orders.model.OrderState;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
@@ -60,6 +61,22 @@ public class OrderService {
         return orderRepository.findByOrderByCreatedAtDesc();
     }
 
+    public boolean cancelOrder(String id) {
+        var optOrder = orderRepository.findById(id);
 
+        if(optOrder.isEmpty())
+            return false;
+
+        var order = optOrder.get();
+
+        try {
+            order.setState(OrderState.CANCELED);
+        } catch (IllegalOrderStateTransitionException ex) {
+            return false;
+        }
+
+        orderRepository.save(order);
+        return true;
+    }
 
 }

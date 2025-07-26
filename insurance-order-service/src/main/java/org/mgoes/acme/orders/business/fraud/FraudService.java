@@ -31,7 +31,6 @@ public class FraudService {
     private final String fraudServiceBaseUri;
     private final OrderService orderService;
 
-
     private final Map<RiskCategoryWrapper, BigDecimal> riskMatrix = Map.ofEntries(
             new AbstractMap.SimpleEntry<>(new RiskCategoryWrapper(REGULAR, LIFE), BigDecimal.valueOf(500000)),
             new AbstractMap.SimpleEntry<>(new RiskCategoryWrapper(REGULAR, HOME), BigDecimal.valueOf(500000)),
@@ -61,7 +60,6 @@ public class FraudService {
     public FraudService(@Value("${fraud.url}") String fraudServiceBaseUri, OrderService orderService){
         this.fraudServiceBaseUri = fraudServiceBaseUri;
         this.orderService = orderService;
-//        this.mediator = mediator;
     }
 
     private FraudAnalysis getAnalysis(FraudRequest request){
@@ -99,11 +97,6 @@ public class FraudService {
 
         order.setState(nextState);
         orderService.saveOrder(order);
-
         mediator.notify(event, order.getId());
     }
-
-//    public FraudAnalysis executeRiskAnalysis(UUID orderId, UUID customerId) {
-//        return getAnalysis(new FraudRequest(orderId, customerId));
-//    }
 }

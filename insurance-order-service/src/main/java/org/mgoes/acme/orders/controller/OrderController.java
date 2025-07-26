@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.mgoes.acme.orders.business.MediatorEvent.CANCEL_ORDER;
 import static org.mgoes.acme.orders.business.MediatorEvent.CREATE_ORDER;
 
 @RequiredArgsConstructor
@@ -64,5 +65,15 @@ public class OrderController implements OrdersApiDelegate {
                 .ok(orderList
                         .stream()
                         .map(OrderMapper.INSTANCE::toApiOrder).toList());
+    }
+
+    @Override
+    public ResponseEntity<Void> cancelOrder(UUID id) {
+
+        if(!orderService.cancelOrder(id.toString()))
+            return ResponseEntity.unprocessableEntity().build();
+
+        mediator.notify(CANCEL_ORDER, id.toString());
+        return ResponseEntity.noContent().build();
     }
 }
