@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -16,10 +17,13 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    private UUID id;
+    private String id;
 
     @Column (name = "cd_status")
     private String status;
+
+    @Column (name = "cd_classification")
+    private RiskClassification classification;
 
     @Column (name = "ts_created")
     private LocalDateTime createdAt;
@@ -28,7 +32,7 @@ public class Order {
     private LocalDateTime finishedAt;
 
     @Column (name = "id_customer")
-    private UUID customerId;
+    private String customerId;
 
     @Column (name = "id_product")
     private Long productId;
@@ -61,10 +65,16 @@ public class Order {
     private List<HistoryItem> history = new ArrayList<>();
 
     @Transient
-    private OrderStatus state;
+    private OrderState state;
 
-    public void setState(OrderStatus newState){
+    public void setState(OrderState newState){
         this.state = newState;
         this.status = newState.name();
+    }
+
+    public void setStatus(String status){
+        if(Objects.nonNull(this.status))
+            throw new IllegalOrderStateTransitionException("You should use [method name] instead of setting status directly");
+        setState(OrderState.valueOf(status));
     }
 }

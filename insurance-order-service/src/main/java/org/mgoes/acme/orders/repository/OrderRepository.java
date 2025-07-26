@@ -9,9 +9,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, UUID> {
+public interface OrderRepository extends JpaRepository<Order, String> {
 
-    Optional<Order> findById(UUID id);
-    List<Order> findByCustomerIdOrderByCreatedAtDesc(UUID id);
+    Order getOne(String id);
+    Optional<Order> findById(String id);
+    List<Order> findByCustomerIdOrderByCreatedAtDesc(String id);
     List<Order> findByOrderByCreatedAtDesc();
 }

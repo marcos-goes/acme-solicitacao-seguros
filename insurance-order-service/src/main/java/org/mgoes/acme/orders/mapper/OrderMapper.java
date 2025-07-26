@@ -1,12 +1,12 @@
 package org.mgoes.acme.orders.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.mgoes.acme.orders.model.Assistance;
 import org.mgoes.acme.orders.model.Order;
-import org.mgoes.acme.orders.openapi.model.OrderCreate;
+import org.mgoes.acme.orders.openapi.model.OrderCreateRequest;
 import org.mgoes.acme.orders.openapi.model.OrderCreateResponse;
+import org.mgoes.acme.orders.openapi.model.OrderResponse;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface OrderMapper {
 
     OrderCreateResponse toOrderCreateResponse(Order order);
 
-    Order toOrderEntitySimple(OrderCreate dto);
+    Order toOrderEntitySimple(OrderCreateRequest dto);
 
     default List<Assistance> toAssistenceList(List<String> assistances){
         return assistances.stream()
@@ -25,7 +25,7 @@ public interface OrderMapper {
                 .toList();
     }
 
-    default Order toOrderEntity(OrderCreate dto){
+    default Order toOrderEntity(OrderCreateRequest dto){
         var order = toOrderEntitySimple(dto);
         for (var item : order.getHistory()) item.setOrder(order);
         for (var assist : order.getAssistances()) assist.setOrder(order);
@@ -33,8 +33,7 @@ public interface OrderMapper {
         return order;
     }
 
-//    @Mapping(target = "history[].timestamp", source = "history[].registered" )
-    org.mgoes.acme.orders.openapi.model.Order toApiOrder(Order order);
+    OrderResponse toApiOrder(Order order);
 
     default List<String> toStringList(List<Assistance> assistances){
         return assistances.stream()

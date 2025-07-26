@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -21,8 +22,14 @@ public class HistoryItem {
     @Column (name = "ts_registered")
     private LocalDateTime timestamp;
 
+    @Column (name = "ds_additional_info")
+    private String additionalInfo;
+
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "id_order")
+    @JoinColumn(name = "id_order", updatable = false, insertable = false)
     private Order order;
+
+    @Column(name = "id_order")
+    private String idOrder;
 }

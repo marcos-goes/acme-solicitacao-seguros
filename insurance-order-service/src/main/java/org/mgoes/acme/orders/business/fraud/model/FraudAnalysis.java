@@ -12,6 +12,6 @@ public class FraudAnalysis {
     private UUID orderId;
     private UUID customerId;
     private LocalDateTime analyzedAt;
-    private FraudClassification classification;
+    private String classification;
     private List<FraudOccurrency> occurrences = new ArrayList<>();
 }

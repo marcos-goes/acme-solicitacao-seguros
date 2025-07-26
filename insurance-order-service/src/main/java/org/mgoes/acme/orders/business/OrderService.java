@@ -3,15 +3,13 @@ package org.mgoes.acme.orders.business;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.business.fraud.FraudClient;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
-import org.mgoes.acme.orders.model.OrderStatus;
+import org.mgoes.acme.orders.model.OrderState;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
 import org.mgoes.acme.orders.repository.CoverageRepository;
 import org.mgoes.acme.orders.repository.HistoryItemRepository;
 import org.mgoes.acme.orders.repository.OrderRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,45 +27,56 @@ public class OrderService {
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
 
-    private final FraudClient fraudClient;
-    private final RabbitTemplate rabbitTemplate;
+//    private final FraudClient fraudClient;
+//    private final RabbitTemplate rabbitTemplate;
 
-    @Transactional
     public Order createOrder(Order order){
-//        var initialStatus = OrderState.RECEIVED;
         var now = LocalDateTime.now();
+        var id = UUID.randomUUID().toString();
 
-        order.setId(UUID.randomUUID());
-        order.setState(OrderStatus.RECEIVED);
-//        order.setStatus(initialStatus);
+        order.setId(id);
+        order.setState(OrderState.RECEIVED);
         order.setCreatedAt(now);
 
-        var historyItem = new HistoryItem();
-        historyItem.setStatus(order.getStatus());
-        historyItem.setTimestamp(now);
-        historyItem.setOrder(order);
-        order.getHistory().add(historyItem);
+//        var historyItem = new HistoryItem();
+//        historyItem.setStatus(order.getStatus());
+//        historyItem.setTimestamp(now);
+//        historyItem.setOrder(order);
+//        order.getHistory().add(historyItem);
 
+
+//        log.info("Order crated: {}", order.getId());
+
+//        fraudClient.executeAnalysis(order.getId(), order.getCustomerId());
+//
+//
+//        sendToTopic(order);
+//
+//        log.info("Sent to topic");
+        saveOrder(order);
+        return order;
+    }
+
+    @Transactional
+    public void saveOrder(Order order){
         orderRepository.save(order);
         order.getHistory().forEach(historyItemRepository::save);
         order.getAssistances().forEach(assistanceRepository::save);
         order.getCoverages().forEach(coverageRepository::save);
-        log.info("Order crated: {}", order.getId());
-
-        fraudClient.executeAnalysis(order.getId(), order.getCustomerId());
-
-
-        sendToTopic(order);
-
-        log.info("Sent to topic");
-        return order;
     }
 
-    public Optional<Order> getOrderById(UUID id) {
+
+    public Order saveAndReturnOrder(Order order){
+        saveOrder(order);
+        return getOrderById(order.getId()).get();
+    }
+
+
+    public Optional<Order> getOrderById(String id) {
         return orderRepository.findById(id);
     }
 
-    public List<Order> findOrdersByCustomerId(UUID customerId) {
+    public List<Order> findOrdersByCustomerId(String customerId) {
         return orderRepository.findByCustomerIdOrderByCreatedAtDesc(customerId);
     }
 
@@ -75,8 +84,4 @@ public class OrderService {
         return orderRepository.findByOrderByCreatedAtDesc();
     }
 
-
-    public void sendToTopic(Order order){
-        rabbitTemplate.convertAndSend("orders_topic", "", order.getId().toString().getBytes());
-    }
 }

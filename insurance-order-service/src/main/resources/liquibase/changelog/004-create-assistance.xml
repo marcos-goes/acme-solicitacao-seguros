@@ -12,7 +12,7 @@
                 <constraints primaryKey="true" primaryKeyName="pk_assistance" nullable="false" />
             </column>
 
-            <column name="id_order" type="UUID">
+            <column name="id_order" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
 

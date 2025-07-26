@@ -12,13 +12,15 @@
                 <constraints primaryKey="true" primaryKeyName="pk_history" nullable="false" />
             </column>
 
-            <column name="id_order" type="UUID">
+            <column name="id_order" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
 
             <column name="cd_status" type="VARCHAR">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="ds_additional_info" type="VARCHAR" />
 
             <column name="ts_registered" type="TIMESTAMP">
                 <constraints nullable="false"/>

@@ -22,7 +22,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderCreate'
+              $ref: '#/components/schemas/OrderCreateRequest'
         required: true
       responses:
         '201':
@@ -55,7 +55,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderList'
+                $ref: '#/components/schemas/OrderResponseList'
         '404':
           description: Not Found
         '500':
@@ -80,9 +80,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderResponse'
         '404':
           description: Not Found
+        '500':
+          description: Application general error
+    delete:
+      tags:
+        - Orders
+      summary: Cancel an order by its id
+      operationId: cancelOrder
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+        '422':
+          description: Unprocessable Entity
         '500':
           description: Application general error
 components:
@@ -106,7 +127,7 @@ components:
         timestamp:
           type: string
           format: date-time
-    OrderBase:
+    OrderCreateRequest:
       type: object
       properties:
         customerId:
@@ -141,9 +162,6 @@ components:
           items:
             type: string
           example: ['Guincho até 250km', 'Troca de Óleo', 'Chaveiro 24h']
-    OrderCreate:
-      allOf:
-        - $ref: "#/components/schemas/OrderBase"
     OrderCreateResponse:
       type: object
       properties:
@@ -153,28 +171,61 @@ components:
         createdAt:
           type: string
           format: date-time
-    Order:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            status:
-              type: string
-              example: 'APPROVED'
-            createdAt:
-              type: string
-              format: date-time
-            finishedAt:
-              type: string
-              format: date-time
-            history:
-              type: array
-              items:
-                $ref: "#/components/schemas/StatusHistoryItem"
-        - $ref: "#/components/schemas/OrderBase"
-    OrderList:
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: 'APPROVED'
+        customerId:
+          type: string
+          format: uuid
+        classification:
+          type: string
+          example: 'REGULAR'
+        productId:
+          type: integer
+          example: 986554
+        category:
+          type: string
+          example: 'AUTO'
+        totalMonthlyPremiumAmount:
+          type: number
+          format: double
+          example: 2587.95
+        insuredAmount:
+          type: number
+          format: double
+          example: 250000.52
+        paymentMethod:
+          type: string
+          example: 'CREDIT_CARD'
+        salesChannel:
+          type: string
+          example: 'MOBILE'
+        coverages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Coverage"
+        assistances:
+          type: array
+          items:
+            type: string
+          example: ['Guincho até 250km', 'Troca de Óleo', 'Chaveiro 24h']
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusHistoryItem"
+    OrderResponseList:
       type: array
       items:
-        $ref: "#/components/schemas/Order"
+        $ref: "#/components/schemas/OrderResponse"
