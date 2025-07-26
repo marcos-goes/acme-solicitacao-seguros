@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -38,7 +37,7 @@ public class Order {
     private Long productId;
 
     @Column (name = "cd_category")
-    private String category;
+    private InsuranceCategory category;
 
     @Column (name = "cd_payment_method")
     private String paymentMethod;
@@ -67,14 +66,31 @@ public class Order {
     @Transient
     private OrderState state;
 
-    public void setState(OrderState newState){
+    @PostLoad
+    private void loadState(){
+        if(this.status != null)
+            this.state = OrderState.valueOf(status);
+    }
+
+    public void setState(OrderState newState) {
+
+        if(this.state == null && !newState.equals(OrderState.RECEIVED))
+            throw new IllegalOrderStateTransitionException("Initial state must be RECEIVED");
+
+        if(this.state != null && !this.state.mayTransitionTo(newState))
+            throw new IllegalOrderStateTransitionException("Invalid transition");
+
         this.state = newState;
         this.status = newState.name();
     }
 
+    public void setInitialState() {
+        setState(OrderState.RECEIVED);
+    }
+
     public void setStatus(String status){
         if(Objects.nonNull(this.status))
-            throw new IllegalOrderStateTransitionException("You should use [method name] instead of setting status directly");
-        setState(OrderState.valueOf(status));
+            throw new IllegalOrderStateTransitionException("You should use setState instead of setting status directly");
+        this.state = OrderState.valueOf(status);
     }
 }

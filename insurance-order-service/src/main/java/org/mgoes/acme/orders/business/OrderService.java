@@ -29,7 +29,7 @@ public class OrderService {
         var id = UUID.randomUUID().toString();
 
         order.setId(id);
-        order.setState(OrderState.RECEIVED);
+        order.setInitialState();
         order.setCreatedAt(now);
 
         saveOrder(order);
@@ -43,12 +43,10 @@ public class OrderService {
         order.getCoverages().forEach(coverageRepository::save);
     }
 
-
     public Order saveAndReturnOrder(Order order){
         saveOrder(order);
         return getOrderById(order.getId()).get();
     }
-
 
     public Optional<Order> getOrderById(String id) {
         return orderRepository.findById(id);
@@ -61,5 +59,7 @@ public class OrderService {
     public List<Order> findOrders() {
         return orderRepository.findByOrderByCreatedAtDesc();
     }
+
+
 
 }

@@ -8,6 +8,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class FraudRequest {
-    private UUID orderId;
-    private UUID customerId;
+    private String orderId;
+    private String customerId;
 }

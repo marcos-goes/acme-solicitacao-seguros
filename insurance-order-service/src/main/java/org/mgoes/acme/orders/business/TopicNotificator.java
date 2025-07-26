@@ -30,6 +30,7 @@ public class TopicNotificator {
         try {
             var jsonContent = objectMapper.writeValueAsString(message);
             rabbitTemplate.convertAndSend(ordersTopicName, "", jsonContent.getBytes());
+            log.info("Message sent to topic [{}]: \n{}", ordersTopicName, jsonContent);
         } catch (JsonProcessingException ex){
             log.error("Error sending notification to topic.", ex);
         }
