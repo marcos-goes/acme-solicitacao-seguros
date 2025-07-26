@@ -18,7 +18,7 @@ public class TopicNotificator {
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
 
-    public TopicNotificator(@Value("${fraud.url}") String ordersTopicName, RabbitTemplate rabbitTemplate, ObjectMapper objectMapper){
+    public TopicNotificator(@Value("${messaging.topic.orders}") String ordersTopicName, RabbitTemplate rabbitTemplate, ObjectMapper objectMapper){
         this.ordersTopicName = ordersTopicName;
         this.rabbitTemplate = rabbitTemplate;
         this.objectMapper = objectMapper;
