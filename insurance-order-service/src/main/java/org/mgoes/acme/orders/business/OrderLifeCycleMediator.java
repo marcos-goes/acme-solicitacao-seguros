@@ -1,6 +1,7 @@
 package org.mgoes.acme.orders.business;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
 import org.mgoes.acme.orders.model.OrderState;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class OrderLifeCycleMediator {
@@ -31,8 +33,11 @@ public class OrderLifeCycleMediator {
 //        topicNotificator.sendToTopic(order);
 //    }
 
-//    @Async
-    public void notify(MediatorEvent event, String id){
+    @Async
+    public void notify(MediatorEvent event, String orderId){
+
+        log.info("Starting actions related to event [{}] in Order id = {}", event.name(), orderId);
+
 //        switch(event) {
 //            case CREATE_ORDER ->
 //        }
@@ -43,10 +48,10 @@ public class OrderLifeCycleMediator {
 
 //        optOrder.if
 
-        var order = orderService.getOrderById(id).get();
-
+        var order = orderService.getOrderById(orderId).get();
         appendHistoryItem(MediatorEvent.CREATE_ORDER, order);
-//        topicNotificator.sendToTopic(order);
+        var updatedOrder = orderService.getOrderById(orderId).get();
+        topicNotificator.sendToTopic(updatedOrder);
     }
 
     private void createOrder(Order order, MediatorEvent event){
@@ -63,9 +68,6 @@ public class OrderLifeCycleMediator {
         historyItem.setTimestamp(now);
         historyItem.setIdOrder(order.getId());
         historyItemRepository.save(historyItem);
-//        order.getHistory().add(historyItem);
-//        orderService.saveOrder(order);
-//        repo.save(order);
     }
 
 

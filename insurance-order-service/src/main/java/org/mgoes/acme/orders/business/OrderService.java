@@ -3,12 +3,10 @@ package org.mgoes.acme.orders.business;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.Order;
 import org.mgoes.acme.orders.model.OrderState;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
 import org.mgoes.acme.orders.repository.CoverageRepository;
-import org.mgoes.acme.orders.repository.HistoryItemRepository;
 import org.mgoes.acme.orders.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +21,8 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final HistoryItemRepository historyItemRepository;
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
-
-//    private final FraudClient fraudClient;
-//    private final RabbitTemplate rabbitTemplate;
 
     public Order createOrder(Order order){
         var now = LocalDateTime.now();
@@ -38,21 +32,6 @@ public class OrderService {
         order.setState(OrderState.RECEIVED);
         order.setCreatedAt(now);
 
-//        var historyItem = new HistoryItem();
-//        historyItem.setStatus(order.getStatus());
-//        historyItem.setTimestamp(now);
-//        historyItem.setOrder(order);
-//        order.getHistory().add(historyItem);
-
-
-//        log.info("Order crated: {}", order.getId());
-
-//        fraudClient.executeAnalysis(order.getId(), order.getCustomerId());
-//
-//
-//        sendToTopic(order);
-//
-//        log.info("Sent to topic");
         saveOrder(order);
         return order;
     }
@@ -60,7 +39,6 @@ public class OrderService {
     @Transactional
     public void saveOrder(Order order){
         orderRepository.save(order);
-        order.getHistory().forEach(historyItemRepository::save);
         order.getAssistances().forEach(assistanceRepository::save);
         order.getCoverages().forEach(coverageRepository::save);
     }
