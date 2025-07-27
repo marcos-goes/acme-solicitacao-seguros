@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity

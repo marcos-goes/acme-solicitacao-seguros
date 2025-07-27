@@ -3,13 +3,11 @@ package org.mgoes.acme.orders.business;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.model.HistoryItem;
 import org.mgoes.acme.orders.model.IllegalOrderStateTransitionException;
 import org.mgoes.acme.orders.model.Order;
 import org.mgoes.acme.orders.model.OrderState;
 import org.mgoes.acme.orders.repository.AssistanceRepository;
 import org.mgoes.acme.orders.repository.CoverageRepository;
-import org.mgoes.acme.orders.repository.HistoryItemRepository;
 import org.mgoes.acme.orders.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
-    private final HistoryItemRepository historyItemRepository;
 
     public Order createOrder(Order order){
         var now = LocalDateTime.now();
@@ -47,17 +44,8 @@ public class OrderService {
         order.getCoverages().forEach(coverageRepository::save);
     }
 
-    public Order saveAndReturnOrder(Order order){
-        saveOrder(order);
-        return getOrderById(order.getId()).get();
-    }
-
     public Optional<Order> getOrderById(String id) {
         return orderRepository.findById(id);
-    }
-
-    public Order getById(String id) {
-        return orderRepository.getOne(id);
     }
 
     public List<Order> findOrdersByCustomerId(String customerId) {
@@ -79,25 +67,13 @@ public class OrderService {
 
         try {
             order.setState(OrderState.CANCELED);
+            order.setFinishedAt(LocalDateTime.now());
         } catch (IllegalOrderStateTransitionException ex) {
             return false;
         }
 
         orderRepository.save(order);
         return true;
-    }
-
-    @Transactional
-    public void appendHistoryItem(String id, String event){
-        var order = getById(id);
-        var now = LocalDateTime.now();
-
-        var historyItem = new HistoryItem();
-        historyItem.setStatus(order.getStatus());
-        historyItem.setAdditionalInfo(event);
-        historyItem.setTimestamp(now);
-        historyItem.setIdOrder(id);
-        historyItemRepository.save(historyItem);
     }
 
 }

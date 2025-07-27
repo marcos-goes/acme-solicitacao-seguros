@@ -1,7 +1,6 @@
 package org.mgoes.acme.orders.business.fraud;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.business.MediatorEvent;
 import org.mgoes.acme.orders.business.OrderLifeCycleMediator;
 import org.mgoes.acme.orders.business.OrderService;
 import org.mgoes.acme.orders.business.fraud.model.FraudAnalysis;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.AbstractMap;
 import java.util.Map;
 
@@ -83,13 +83,16 @@ public class FraudService {
         var risk = RiskClassification.valueOf(result.getClassification());
         var category = order.getCategory();
 
+        order.setClassification(risk);
+
         var event = FRAUD_ANALISYS_REJECTED;
         var nextState = OrderState.REJECTED;
 
-        order.setClassification(risk);
         if(isAcceptableRisk(risk, category, order.getInsuredAmount())) {
             event = FRAUD_ANALISYS_ACCEPTED;
             nextState = OrderState.VALIDATED;
+        } else {
+            order.setFinishedAt(LocalDateTime.now());
         }
 
         order.setState(nextState);

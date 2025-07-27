@@ -21,6 +21,7 @@ public class PaymentsListener implements ExternalActionsProcessor {
     private final OrderService orderService;
     private final OrderLifeCycleMediator mediator;
 
+    @Override
     @RabbitListener(queues = "${messaging.queue.payments}")
     public void listen(String message) throws JsonProcessingException {
         this.process(message, objectMapper, PAYMENT_CONFIRMED, orderService, mediator, log);
