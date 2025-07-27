@@ -8,13 +8,13 @@ public interface ExternalActionsProcessor {
 
     void listen(String message) throws JsonProcessingException;
 
-    default void process(String message, ObjectMapper objectMapper, MediatorEvent event, OrderService orderService, OrderLifeCycleMediator mediator, Logger log) throws JsonProcessingException {
+    default void process(String message, ObjectMapper objectMapper, MediatorEvent event, OrderService orderService, Logger log) throws JsonProcessingException {
         log.info("Incomming message {}: {}", event, message);
         var objMessage = objectMapper.readValue(message, IncomingMessage.class);
         var id = objMessage.getOrderId();
 
         orderService.getOrderById(id).ifPresent(order -> {
-            mediator.notify(event, id);
+            orderService.saveOrder(order, event);
         });
     }
 }

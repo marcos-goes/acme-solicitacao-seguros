@@ -13,6 +13,7 @@ import org.mgoes.acme.orders.repository.HistoryItemRepository;
 import org.mgoes.acme.orders.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.nimbus.State;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class OrderService {
     private final AssistanceRepository assistanceRepository;
     private final CoverageRepository coverageRepository;
     private final HistoryItemRepository historyItemRepository;
+    private final OrderLifeCycleMediator mediator;
 
     public Order createOrder(Order order){
         var now = LocalDateTime.now();
@@ -36,20 +38,26 @@ public class OrderService {
         order.setInitialState();
         order.setCreatedAt(now);
 
-        saveOrder(order);
+        saveOrder(order, MediatorEvent.CREATE_ORDER);
+        mediator.notify(MediatorEvent.CREATE_ORDER, order.getId(), this);
         return order;
     }
 
     @Transactional
-    public void saveOrder(Order order){
+    public void saveOrder(Order order, MediatorEvent event){
         orderRepository.save(order);
         order.getAssistances().forEach(assistanceRepository::save);
         order.getCoverages().forEach(coverageRepository::save);
+//        orderRepository.flush();
+//        mediator.notify(event, order.getId(), this);
     }
 
-    public Order saveAndReturnOrder(Order order){
-        saveOrder(order);
-        return getOrderById(order.getId()).get();
+//    @Transactional
+    public void saveOrder(String orderId, OrderState nextState, MediatorEvent event){
+        var order = getById(orderId);
+        order.setState(nextState);
+        saveOrder(order, null);
+        mediator.notify(event, order.getId(), this);
     }
 
     public Optional<Order> getOrderById(String id) {
@@ -68,7 +76,6 @@ public class OrderService {
         return orderRepository.findByOrderByCreatedAtDesc();
     }
 
-    @Transactional
     public boolean cancelOrder(String id) {
         var optOrder = orderRepository.findById(id);
 
@@ -83,7 +90,8 @@ public class OrderService {
             return false;
         }
 
-        orderRepository.save(order);
+        saveOrder(order, MediatorEvent.CANCEL_ORDER);
+        mediator.notify(MediatorEvent.CANCEL_ORDER, order.getId(), this);
         return true;
     }
 

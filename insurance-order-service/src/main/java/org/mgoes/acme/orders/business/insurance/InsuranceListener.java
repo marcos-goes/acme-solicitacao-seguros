@@ -17,10 +17,9 @@ public class InsuranceListener implements ExternalActionsProcessor {
 
     private final ObjectMapper objectMapper;
     private final OrderService orderService;
-    private final OrderLifeCycleMediator mediator;
 
     @RabbitListener(queues = "${messaging.queue.insurance}")
     public void listen(String message) throws JsonProcessingException {
-        this.process(message, objectMapper, INSURANCE_SUBSCRITION_CONFIRMED, orderService, mediator, log);
+        this.process(message, objectMapper, INSURANCE_SUBSCRITION_CONFIRMED, orderService, log);
     }
 }

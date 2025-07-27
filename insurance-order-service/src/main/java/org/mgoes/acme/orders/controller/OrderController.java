@@ -1,8 +1,6 @@
 package org.mgoes.acme.orders.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.mgoes.acme.orders.business.MediatorEvent;
-import org.mgoes.acme.orders.business.OrderLifeCycleMediator;
 import org.mgoes.acme.orders.business.OrderService;
 import org.mgoes.acme.orders.mapper.OrderMapper;
 import org.mgoes.acme.orders.openapi.api.OrdersApiDelegate;
@@ -17,15 +15,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static org.mgoes.acme.orders.business.MediatorEvent.CANCEL_ORDER;
-import static org.mgoes.acme.orders.business.MediatorEvent.CREATE_ORDER;
-
 @RequiredArgsConstructor
 @Service
 public class OrderController implements OrdersApiDelegate {
 
     private final OrderService orderService;
-    private final OrderLifeCycleMediator mediator;
 
     @Override
     public ResponseEntity<OrderCreateResponse> createInsuranceOrder(OrderCreateRequest orderCreate){
@@ -33,7 +27,6 @@ public class OrderController implements OrdersApiDelegate {
         order = orderService.createOrder(order);
         var response = OrderMapper.INSTANCE.toOrderCreateResponse(order);
 
-        mediator.notify(CREATE_ORDER, order.getId());
         return ResponseEntity
                 .created(URI.create("api/vi/orders/" + response.getId().toString()))
                 .body(response);
@@ -73,7 +66,6 @@ public class OrderController implements OrdersApiDelegate {
         if(!orderService.cancelOrder(id.toString()))
             return ResponseEntity.unprocessableEntity().build();
 
-        mediator.notify(CANCEL_ORDER, id.toString());
         return ResponseEntity.noContent().build();
     }
 }

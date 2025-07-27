@@ -1,8 +1,6 @@
 package org.mgoes.acme.orders.business.fraud;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mgoes.acme.orders.business.MediatorEvent;
-import org.mgoes.acme.orders.business.OrderLifeCycleMediator;
 import org.mgoes.acme.orders.business.OrderService;
 import org.mgoes.acme.orders.business.fraud.model.FraudAnalysis;
 import org.mgoes.acme.orders.business.fraud.model.FraudRequest;
@@ -30,7 +28,6 @@ public class FraudService {
 
     private final RestClient restClient = RestClient.create();
     private final String fraudServiceBaseUri;
-    private final OrderService orderService;
 
     private final Map<RiskCategoryWrapper, BigDecimal> riskMatrix = Map.ofEntries(
             new AbstractMap.SimpleEntry<>(new RiskCategoryWrapper(REGULAR, LIFE), BigDecimal.valueOf(500000)),
@@ -58,9 +55,8 @@ public class FraudService {
             new AbstractMap.SimpleEntry<>(new RiskCategoryWrapper(NO_INFORMATION, HEALTH), BigDecimal.valueOf(55000))
     );
 
-    public FraudService(@Value("${fraud.url}") String fraudServiceBaseUri, OrderService orderService){
+    public FraudService(@Value("${fraud.url}") String fraudServiceBaseUri){
         this.fraudServiceBaseUri = fraudServiceBaseUri;
-        this.orderService = orderService;
     }
 
     private FraudAnalysis getAnalysis(FraudRequest request){
@@ -73,7 +69,7 @@ public class FraudService {
     }
 
     @Async
-    public void executeRiskAnalysis(String orderId, OrderLifeCycleMediator mediator) {
+    public void executeRiskAnalysis(String orderId, OrderService orderService) {
 
         var order = orderService.getOrderById(orderId).get();
 
@@ -93,8 +89,8 @@ public class FraudService {
         }
 
         order.setState(nextState);
-        orderService.saveOrder(order);
-        mediator.notify(event, order.getId());
+//        orderService.saveOrder(order, event);
+        orderService.saveOrder(orderId, nextState, event);
     }
 
     public boolean isAcceptableRisk(RiskClassification classification, InsuranceCategory category, BigDecimal insuredAmount){
