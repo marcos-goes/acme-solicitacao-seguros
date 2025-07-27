@@ -28,33 +28,19 @@ public class OrderLifeCycleMediator {
 
         log.info("Starting actions related to event {} in Order id = {}", event.name(), orderId);
 
-        switch(event) {
-            case CREATE_ORDER -> fraudService.executeRiskAnalysis(orderId, this);
-        }
-
-//        var updatedOrder = appendHistoryItem(event, order);
-//        var order = repo.getOne(id);
-//        var order = orderService.getOrderById(id).get();
-
-//        optOrder.if
-
         var order = orderService.getOrderById(orderId).get();
         appendHistoryItem(event, order);
         var updatedOrder = orderService.getOrderById(orderId).get();
         topicNotificator.sendToTopic(updatedOrder);
+
+        switch(event) {
+            case CREATE_ORDER -> fraudService.executeRiskAnalysis(orderId, this);
+        }
+
         log.info("Finishing actions related to event [{}] in Order id = {}", event.name(), orderId);
     }
 
-    @Transactional
-    private void appendHistoryItem(MediatorEvent event, Order order){
-        var now = LocalDateTime.now();
-        var historyItem = new HistoryItem();
-        historyItem.setStatus(order.getStatus());
-        historyItem.setAdditionalInfo("Event: " + event.name());
-        historyItem.setTimestamp(now);
-        historyItem.setIdOrder(order.getId());
-        historyItemRepository.save(historyItem);
-    }
+
 
 
 }

@@ -6,6 +6,7 @@ import org.mgoes.acme.orders.business.OrderLifeCycleMediator;
 import org.mgoes.acme.orders.business.OrderService;
 import org.mgoes.acme.orders.business.fraud.model.FraudAnalysis;
 import org.mgoes.acme.orders.business.fraud.model.FraudRequest;
+import org.mgoes.acme.orders.model.InsuranceCategory;
 import org.mgoes.acme.orders.model.OrderState;
 import org.mgoes.acme.orders.model.RiskClassification;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,21 +83,23 @@ public class FraudService {
         var risk = RiskClassification.valueOf(result.getClassification());
         var category = order.getCategory();
 
-        MediatorEvent event;
-        OrderState nextState;
+        var event = FRAUD_ANALISYS_REJECTED;
+        var nextState = OrderState.REJECTED;
 
         order.setClassification(risk);
-        if(order.getInsuredAmount().compareTo(
-                riskMatrix.getOrDefault(new RiskCategoryWrapper(risk, category), BigDecimal.valueOf(0))) > 0) {
+        if(isAcceptableRisk(risk, category, order.getInsuredAmount())) {
             event = FRAUD_ANALISYS_ACCEPTED;
             nextState = OrderState.VALIDATED;
-        } else {
-            event = FRAUD_ANALISYS_REJECTED;
-            nextState = OrderState.REJECTED;
         }
 
         order.setState(nextState);
         orderService.saveOrder(order);
         mediator.notify(event, order.getId());
+    }
+
+    public boolean isAcceptableRisk(RiskClassification classification, InsuranceCategory category, BigDecimal insuredAmount){
+        return insuredAmount.compareTo(
+                riskMatrix.getOrDefault(new RiskCategoryWrapper(classification, category), BigDecimal.valueOf(0)))
+                < 0;
     }
 }

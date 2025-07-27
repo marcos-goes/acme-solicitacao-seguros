@@ -13,14 +13,7 @@ import java.util.UUID;
 public interface OrderRepository extends JpaRepository<Order, String> {
 
     Order getOne(String id);
-
-
-//    @Query("select o from Order o where u.firstname like %?1")
-
     Optional<Order> findById(String id);
-
-
-
     List<Order> findByCustomerIdOrderByCreatedAtDesc(String id);
     List<Order> findByOrderByCreatedAtDesc();
 }
