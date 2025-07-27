@@ -19,7 +19,6 @@ services:
     volumes:
       - ./mock-server-config:/config
     environment:
-      # MOCKSERVER_LOG_LEVEL: TRACE
       MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mock-initializer.json
   rabbitmq:
     container_name: rabbitmq

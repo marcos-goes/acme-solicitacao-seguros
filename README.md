@@ -19,24 +19,41 @@ A seguir explorarei cada um desses recursos e o que foi usado para simular ou mo
 ## Contrato de API
 Para o desenvolvimento da API, utilizei uma dependência do OpenAPI que, a partir de um Swagger, ele disponibiliza 
 interfaces a serem implementadas. Este recurso é um habilitador de uma abordagem contract-first. O arquivo de Swagger em
-questão fica na raiz do projeto: [openapi.yaml](/insurance-order-service/openapi.yaml).
+questão fica na raiz do projeto: [openapi.yaml](openapi.yaml).
 
 Em razão dessa característica, é necessário rodar um comando do Maven antes de abrir o código para que as classes 
 e interfaces autogeradas estejam disponíveis.
 
 ``` bash
-mvn generate-sources
+mvn clean generate-sources
 ```
 
+## Docker Compose
+A disponibilização dos recursos externos foi realizada por meio do Docker Compose. 
 
-
+Iniciar os container e disponibilizar os recursos:
 ``` bash
 docker compose up -d
 ```
 
+Desligar os containers:
 ``` bash
 docker compose down
 ```
+
+A seguir o detalhamento de cada dos containers
+
+### Banco de dados
+Foi utilizado o PostgreSQL na versão 16.3. Os dados estão direcionados para serem gravados 
+em um volume montado no diretório `/postgresql-data`, que caso seja necessário limpar
+
+### Serviço de Anti-fraude
+
+### Broker
+
+
+
+
 
 ``` bash
 sudo rm -Rf ./postgresql-data
