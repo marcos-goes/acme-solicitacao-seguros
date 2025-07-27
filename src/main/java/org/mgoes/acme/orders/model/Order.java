@@ -52,15 +52,15 @@ public class Order {
     private BigDecimal insuredAmount;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)//, cascade = CascadeType.PERSIST) //
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Coverage> coverages = new ArrayList<>();
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order",  fetch = FetchType.EAGER)//, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order",  fetch = FetchType.EAGER)
     private List<Assistance> assistances = new ArrayList<>();
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order",  fetch = FetchType.EAGER)//, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order",  fetch = FetchType.EAGER)
     private List<HistoryItem> history = new ArrayList<>();
 
     @Transient
