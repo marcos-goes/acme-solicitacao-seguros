@@ -67,7 +67,7 @@ public class Order {
     private OrderState state;
 
     @PostLoad
-    private void loadState(){
+    void loadState(){
         if(this.status != null)
             this.state = OrderState.valueOf(status);
     }
@@ -92,5 +92,6 @@ public class Order {
         if(Objects.nonNull(this.status))
             throw new IllegalOrderStateTransitionException("You should use setState instead of setting status directly");
         this.state = OrderState.valueOf(status);
+        this.status = status;
     }
 }
