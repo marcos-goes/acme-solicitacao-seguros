@@ -32,9 +32,7 @@ class FraudServiceTest {
             "PREFERRED,LIFE,500000,true",
             "PREFERRED,LIFE,800000,false"
     })
-    void shouldVerifyAcceptableRiskUsingRiskMatrix(String classification, String category, BigDecimal insuredAmount, boolean expected){
-        var riskClassification = RiskClassification.valueOf(classification);
-        var insuranceCategory = InsuranceCategory.valueOf(category);
+    void shouldVerifyAcceptableRiskUsingRiskMatrix(RiskClassification riskClassification, InsuranceCategory insuranceCategory, BigDecimal insuredAmount, boolean expected){
         assertEquals(expected, fraudService.isAcceptableRisk(riskClassification, insuranceCategory, insuredAmount));
     }
 
