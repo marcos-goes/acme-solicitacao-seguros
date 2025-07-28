@@ -103,6 +103,6 @@ public class FraudService {
     public boolean isAcceptableRisk(RiskClassification classification, InsuranceCategory category, BigDecimal insuredAmount){
         return insuredAmount.compareTo(
                 riskMatrix.getOrDefault(new RiskCategoryWrapper(classification, category), BigDecimal.valueOf(0)))
-                < 0;
+                <= 0;
     }
 }

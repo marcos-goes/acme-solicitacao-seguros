@@ -29,7 +29,7 @@ public class OrderLifeCycleMediator {
     @Async
     public void notify(MediatorEvent event, String orderId){
 
-        log.info("Starting actions related to event {} in Order id = {}", event.name(), orderId);
+        log.info("Starting actions related to event [{}] in Order id = {}", event.name(), orderId);
 
         var order = orderService.getOrderById(orderId).get();
         appendHistoryItem(event, order);
