@@ -63,7 +63,7 @@ public class FraudService {
         this.orderService = orderService;
     }
 
-    private FraudAnalysis getAnalysis(FraudRequest request){
+    FraudAnalysis getAnalysis(FraudRequest request){
         return restClient.post()
                 .uri(fraudServiceBaseUri + "/v1/analysis")
                 .contentType(MediaType.APPLICATION_JSON)

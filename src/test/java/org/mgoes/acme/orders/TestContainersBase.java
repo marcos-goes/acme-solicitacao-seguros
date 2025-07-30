@@ -5,7 +5,7 @@ import org.testcontainers.containers.ComposeContainer;
 
 import java.io.File;
 
-class TestContainersBase {
+public class TestContainersBase {
 
     public static ComposeContainer environment = new ComposeContainer(
             new File("src/test/resources/docker-compose-test/docker-compose.yaml")
