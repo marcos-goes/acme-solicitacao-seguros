@@ -100,7 +100,7 @@ public class FraudService {
         mediator.notify(event, order.getId());
     }
 
-    public boolean isAcceptableRisk(RiskClassification classification, InsuranceCategory category, BigDecimal insuredAmount){
+    boolean isAcceptableRisk(RiskClassification classification, InsuranceCategory category, BigDecimal insuredAmount){
         return insuredAmount.compareTo(
                 riskMatrix.getOrDefault(new RiskCategoryWrapper(classification, category), BigDecimal.valueOf(0)))
                 <= 0;
