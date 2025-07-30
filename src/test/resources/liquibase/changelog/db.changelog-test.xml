@@ -4,4 +4,27 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
+    <changeSet id="test-01-load-orders" author="Marcos Goes">
+
+        <insert tableName="tb_order">
+            <column name="id" value="3f43284f-ba69-4cfa-b848-a62c53e51389" />
+            <column name="cd_status" value="PENDING" />
+            <column name="cd_classification" value="REGULAR" />
+            <column name="ts_created" value="2025-07-30 11:36:27.538974000" />
+            <column name="id_customer" value="d91d586a-8240-4cdc-a821-17475340c70d" />
+            <column name="cd_category" value="LIFE" />
+            <column name="vl_total_monthly_premium" value="150.65" />
+            <column name="vl_insured" value="150000.99" />
+            <column name="cd_payment_method" value="CREDIT_CARD" />
+            <column name="cd_sales_channel" value="WEB" />
+        </insert>
+
+    </changeSet>
+
+<!--        <SELECT_FROM_TB_ORDER ID="8c48ea4b-5bc6-4f76-981c-a1ad8171f46d" CD_STATUS="REJECTED" CD_CLASSIFICATION="NO_INFORMATION" TS_CREATED="2025-07-30 11:37:15.17806000" TS_FINISHED="2025-07-30 11:37:15.734043000" ID_CUSTOMER="2e8de788-af74-4d67-a8b9-25d7efa9ff09" ID_PRODUCT="12244" CD_CATEGORY="3" VL_TOTAL_MONTHLY_PREMIUM="3277.44" VL_INSURED="500000.00" CD_PAYMENT_METHOD="BOLETO" CD_SALES_CHANNEL="MOBILE"/>-->
+<!--        <SELECT_FROM_TB_ORDER ID="883c9eb0-f554-4419-bdb1-2bb1f21d8cd7" CD_STATUS="PENDING" CD_CLASSIFICATION="HIGH_RISK" TS_CREATED="2025-07-30 11:37:27.524566000" TS_FINISHED="[NULL]" ID_CUSTOMER="b8304e05-0178-4e41-81e2-403df10f9263" ID_PRODUCT="986554" CD_CATEGORY="0" VL_TOTAL_MONTHLY_PREMIUM="2587.95" VL_INSURED="240000.52" CD_PAYMENT_METHOD="CREDIT_CARD" CD_SALES_CHANNEL="MOBILE"/>-->
+
+
+
+
 </databaseChangeLog>

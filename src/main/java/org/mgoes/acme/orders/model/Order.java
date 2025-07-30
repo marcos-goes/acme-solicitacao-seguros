@@ -21,6 +21,7 @@ public class Order {
     @Column (name = "cd_status")
     private String status;
 
+    @Enumerated(EnumType.STRING)
     @Column (name = "cd_classification")
     private RiskClassification classification;
 
@@ -36,6 +37,7 @@ public class Order {
     @Column (name = "id_product")
     private Long productId;
 
+    @Enumerated(EnumType.STRING)
     @Column (name = "cd_category")
     private InsuranceCategory category;
 
