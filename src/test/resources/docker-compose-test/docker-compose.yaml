@@ -1,18 +1,24 @@
 services:
   postgresql:
     image: postgres:16.3
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: 'usrOwner'
       POSTGRES_PASSWORD: 'abc@123'
       POSTGRES_DB: insurance-order
   mockserver:
     image: mockserver/mockserver:5.15.0
+    ports:
+      - 1080:1080
     volumes:
       - ./mock-server-config:/config
     environment:
       MOCKSERVER_INITIALIZATION_JSON_PATH: /config/mock-initializer.json
   rabbitmq:
     image: rabbitmq:4-management
+    ports:
+      - 5672:5672
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf

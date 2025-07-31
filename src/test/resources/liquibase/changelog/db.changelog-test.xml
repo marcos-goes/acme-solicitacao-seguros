@@ -10,6 +10,7 @@
             <column name="id" value="3f43284f-ba69-4cfa-b848-a62c53e51389" />
             <column name="cd_status" value="PENDING" />
             <column name="cd_classification" value="REGULAR" />
+            <column name="id_product" value="55874" />
             <column name="ts_created" value="2025-07-30 11:36:27.538974000" />
             <column name="id_customer" value="d91d586a-8240-4cdc-a821-17475340c70d" />
             <column name="cd_category" value="LIFE" />
