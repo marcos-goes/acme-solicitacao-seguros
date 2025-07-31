@@ -7,7 +7,7 @@
     <changeSet id="test-01-load-orders" author="Marcos Goes">
 
         <insert tableName="tb_order">
-            <column name="id" value="3f43284f-ba69-4cfa-b848-a62c53e51389" />
+            <column name="id" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
             <column name="cd_status" value="PENDING" />
             <column name="cd_classification" value="REGULAR" />
             <column name="id_product" value="55874" />
@@ -20,12 +20,152 @@
             <column name="cd_sales_channel" value="WEB" />
         </insert>
 
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
+            <column name="ds_name" value="Morte Acidental" />
+            <column name="vl_amount" value="150000.00" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
+            <column name="ds_name" value="Doença grave" />
+            <column name="vl_amount" value="75000.88" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
+            <column name="cd_status" value="RECEIVED" />
+            <column name="ds_additional_info" value="CREATE_ORDER" />
+            <column name="ts_registered" value="2025-07-31 11:14:26.381" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
+            <column name="cd_status" value="VALIDATED" />
+            <column name="ds_additional_info" value="FRAUD_ANALISYS_ACCEPTED" />
+            <column name="ts_registered" value="2025-07-31 11:14:26.938" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="02b444b4-74e7-4d2a-a83f-0d0fb32206c8" />
+            <column name="cd_status" value="PENDING" />
+            <column name="ds_additional_info" value="PENDING_EXTERNAL_ACTIONS" />
+            <column name="ts_registered" value="2025-07-31 11:14:26.970" />
+        </insert>
+
+        <!-- -->
+
+        <insert tableName="tb_order">
+            <column name="id" value="f8ff4b02-30d5-4f11-bc7b-7e898b722c75" />
+            <column name="cd_status" value="REJECTED" />
+            <column name="cd_classification" value="NO_INFORMATION" />
+            <column name="id_product" value="12244" />
+            <column name="ts_created" value="2025-07-30 11:37:15.17806000" />
+            <column name="ts_finished" value="2025-07-30 11:37:15.734043000" />
+            <column name="id_customer" value="2e8de788-af74-4d67-a8b9-25d7efa9ff09" />
+            <column name="cd_category" value="TRAVEL" />
+            <column name="vl_total_monthly_premium" value="3277.44" />
+            <column name="vl_insured" value="500000.00" />
+            <column name="cd_payment_method" value="BOLETO" />
+            <column name="cd_sales_channel" value="MOBILE" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="f8ff4b02-30d5-4f11-bc7b-7e898b722c75" />
+            <column name="ds_name" value="Extravio de bagagens" />
+            <column name="vl_amount" value="8540.99" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="f8ff4b02-30d5-4f11-bc7b-7e898b722c75" />
+            <column name="ds_name" value="Atendimento em hospital" />
+            <column name="vl_amount" value="15000.00" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="f8ff4b02-30d5-4f11-bc7b-7e898b722c75" />
+            <column name="cd_status" value="RECEIVED" />
+            <column name="ds_additional_info" value="CREATE_ORDER" />
+            <column name="ts_registered" value="2025-07-31 11:14:30.659" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="f8ff4b02-30d5-4f11-bc7b-7e898b722c75" />
+            <column name="cd_status" value="REJECTED" />
+            <column name="ds_additional_info" value="FRAUD_ANALISYS_REJECTED" />
+            <column name="ts_registered" value="2025-07-31 11:14:31.378" />
+        </insert>
+
+        <!-- -->
+
+        <insert tableName="tb_order">
+            <column name="id" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="cd_status" value="PENDING" />
+            <column name="cd_classification" value="HIGH_RISK" />
+            <column name="id_product" value="986554" />
+            <column name="ts_created" value="2025-07-30 11:37:27.524566000" />
+            <column name="id_customer" value="b8304e05-0178-4e41-81e2-403df10f9263" />
+            <column name="cd_category" value="AUTO" />
+            <column name="vl_total_monthly_premium" value="2587.95" />
+            <column name="vl_insured" value="240000.52" />
+            <column name="cd_payment_method" value="CREDIT_CARD" />
+            <column name="cd_sales_channel" value="MOBILE" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Roubo" />
+            <column name="vl_amount" value="20000.99" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Colisão com terceiros" />
+            <column name="vl_amount" value="15000.99" />
+        </insert>
+
+        <insert tableName="tb_coverage">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Perda Total" />
+            <column name="vl_amount" value="65000.99" />
+        </insert>
+
+        <insert tableName="tb_assistance">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Guincho até 250km" />
+        </insert>
+
+        <insert tableName="tb_assistance">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Troca de Óleo" />
+        </insert>
+
+        <insert tableName="tb_assistance">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="ds_name" value="Chaveiro 24h" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="cd_status" value="RECEIVED" />
+            <column name="ds_additional_info" value="CREATE_ORDER" />
+            <column name="ts_registered" value="2025-07-31 11:14:23.305" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="cd_status" value="VALIDATED" />
+            <column name="ds_additional_info" value="FRAUD_ANALISYS_ACCEPTED" />
+            <column name="ts_registered" value="2025-07-31 11:14:24.380" />
+        </insert>
+
+        <insert tableName="tb_history">
+            <column name="id_order" value="62248bd8-4391-48df-bfaf-b975ac869a8e" />
+            <column name="cd_status" value="PENDING" />
+            <column name="ds_additional_info" value="PENDING_EXTERNAL_ACTIONS" />
+            <column name="ts_registered" value="2025-07-31 11:14:24.422" />
+        </insert>
+
     </changeSet>
-
-<!--        <SELECT_FROM_TB_ORDER ID="8c48ea4b-5bc6-4f76-981c-a1ad8171f46d" CD_STATUS="REJECTED" CD_CLASSIFICATION="NO_INFORMATION" TS_CREATED="2025-07-30 11:37:15.17806000" TS_FINISHED="2025-07-30 11:37:15.734043000" ID_CUSTOMER="2e8de788-af74-4d67-a8b9-25d7efa9ff09" ID_PRODUCT="12244" CD_CATEGORY="3" VL_TOTAL_MONTHLY_PREMIUM="3277.44" VL_INSURED="500000.00" CD_PAYMENT_METHOD="BOLETO" CD_SALES_CHANNEL="MOBILE"/>-->
-<!--        <SELECT_FROM_TB_ORDER ID="883c9eb0-f554-4419-bdb1-2bb1f21d8cd7" CD_STATUS="PENDING" CD_CLASSIFICATION="HIGH_RISK" TS_CREATED="2025-07-30 11:37:27.524566000" TS_FINISHED="[NULL]" ID_CUSTOMER="b8304e05-0178-4e41-81e2-403df10f9263" ID_PRODUCT="986554" CD_CATEGORY="0" VL_TOTAL_MONTHLY_PREMIUM="2587.95" VL_INSURED="240000.52" CD_PAYMENT_METHOD="CREDIT_CARD" CD_SALES_CHANNEL="MOBILE"/>-->
-
-
-
 
 </databaseChangeLog>
